@@ -99,7 +99,12 @@ public class Trolley : MonoBehaviour {
         //moveVector = (moveVector / distanceToTarget) * movespeed;
     }
 
-    //computes the angle (in degrees) between two vectors 
+    /// <summary>
+    /// computes the angle (in degrees) between two vectors 
+    /// </summary>
+    /// <param name="v1">First Vector (transform.forward) </param>
+    /// <param name="v2">Second Vector (moveVector)</param>
+    /// <returns></returns>
     private float AngleBetweenTwoVectors(Vector3 v1, Vector3 v2)
     {
         float dotProduct = (v1.x * v2.x) + (v1.z * v2.z); //compute the angle using dot product
@@ -111,72 +116,18 @@ public class Trolley : MonoBehaviour {
         return angle * Mathf.Sign(dotProduct); //return the angle (+ when transform.forward on left of moveVector)
     }
 
+    /// <summary>
+    /// What happens when an object gets hit by the bus 
+    /// </summary>
+    /// <param name="coll">Collider of the object being hit </param>
     public void OnTriggerEnter(Collider coll)
     {
-        if(coll.tag == "Worker")
+        if(coll.tag == "Worker") 
         {
+            //Destroy any worker hit by the bus
             Destroy(coll.gameObject);
         }
     }
-
-    #region oldCode
-    /*
-    //private Node[] dests = new Node[3] { new Node(0, 240), new Node(66, 219), };
-    public Node destination;
-    [SerializeField] private float movespeed;
-
-    [SerializeField] private Road roadScript;
-    private Vector3 switchLocation;
-    private bool flipped = false;
-
-    private void Start()
-    {
-        destination = new Node(0, 100);
-    }
-
-
-    // Update is called once per frame
-    void Update () {
-
-        //destination = roadScript.Endpoints[1];
-        //switchLocation = roadScript.SwitchLocation;
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            flipped = !flipped;
-        }
-
-        if(transform.position.x == destination.Position().x && transform.position.z == destination.Position().z)
-        {
-            if (flipped) {
-                destination = new Node(66, 219);
-            }
-            else { destination = new Node(0, 240); }
-        }
-
-        //vector pointing to destination:
-        Vector3 pointing = new Vector3(destination.Position().x - transform.position.x, 0, destination.Position().z - transform.position.z);
-        Vector3 normalized = pointing.magnitude != 0? pointing / pointing.magnitude : Vector3.zero;
-        //move towards destination
-        transform.Translate(normalized * movespeed);
-
-	}
-
-    private Vector3 RemovedY(Vector3 origional)
-    {
-        return new Vector3(origional.x, 0, origional.z);
-    }
-     private float DistanceXZ(Node target)
-    {
-        return Mathf.Sqrt(Mathf.Pow(transform.position.x - target.XPos(), 2) + Mathf.Pow(transform.position.z - target.ZPos(), 2));
-    }
-
-    public void OnTriggerEnter(Collider other)
-    {
-        Destroy(other.gameObject);
-    }
-    */
-    #endregion
 }
 
 //Node class created by road for controlling the trolley movements
@@ -188,28 +139,24 @@ public class Node : System.Object
     private int count;
     private bool isSwitch;
 
-    #region oldConstructor
-    /*
-    public Node(float x, float z)
-    {
-        node = new GameObject();
-        node.transform.position = new Vector3(x, 0, z);
-    }*/
-    #endregion
-
+    /// <summary>
+    /// Node Objects used to direct path of the trolley
+    /// </summary>
+    /// <param name="trans">Transform for position and rotation of node</param>
+    /// <param name="branch">What branch of the roadMap the node is on</param>
+    /// <param name="count">What section of the road is withing it's branch</param>
+    /// <param name="isSwitch">Road is a switch point</param>
     public Node(Transform trans, int branch, int count, bool isSwitch)
     {
         transform = trans;
-
         this.branch = branch;
         this.count = count;
-
         this.isSwitch = isSwitch;
     }
 
-    public int Count { get { return count; } }
-    public int Branch { get { return branch; } }
-    public Vector3 Position() { return transform.position; }
-    public float XPos() { return transform.position.x; }
-    public float ZPos() { return transform.position.z; }
+    public int Count { get { return count; } } //section of the branch
+    public int Branch { get { return branch; } } //branch the node is on
+    public Vector3 Position() { return transform.position; } //transform of node
+    public float XPos() { return transform.position.x; } //x position of node
+    public float ZPos() { return transform.position.z; } //z position of node
 }

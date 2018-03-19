@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Opening : MonoBehaviour {
 
-    private static int level = 0;
+    private static int level;
     [SerializeField] private List<string> Levels;
 
     private Text Fact;
@@ -14,13 +14,13 @@ public class Opening : MonoBehaviour {
     // Use this for initialization
 	void Start () {
         Fact = GetComponent<Text>();
- 	}
+        Fact.text = "FACT: " + getFact();
+    }
 	
 	// Update is called once per frame
 	void Update () {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Fact.text = "FACT: " + getFact();
             SceneManager.LoadScene(Levels[level], LoadSceneMode.Single);
             level++;
         }

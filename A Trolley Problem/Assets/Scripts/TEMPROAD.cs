@@ -72,7 +72,7 @@ public class TEMPROAD : MonoBehaviour
                             //contiue current path with same ramp or curve
                             newRoad = Instantiate(gameObject);
                             Position(newRoad);
-                            nodes.Add(new Node(transform, branch, branches[branch], false));
+                            nodes.Add(new Node(transform, branch, branches[branch] + 1, false));
                             branches[branch]++;
                             //create new branch
                             curveAngle = config.curveAngle;
@@ -99,8 +99,14 @@ public class TEMPROAD : MonoBehaviour
             nodes.Add(new Node(transform, branch, branches[branch]+1, false));
 
             //start the trolley once all the nodes have been created
-            if (nodes.Count == manager.NumSections()) {
+            if (nodes.Count == manager.NumSections() - manager.NumBranches() + 1) {
                 trolley.StartTheTrolley(nodes, manager.branches);
+
+                //reset all static variables for next level
+                manager = null;
+                roadMap = null;
+                nodes = null;
+                branches = null;
             }
         }
     }
