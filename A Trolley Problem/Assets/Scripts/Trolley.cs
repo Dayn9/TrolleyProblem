@@ -7,32 +7,54 @@ using UnityEngine.UI;
 //controls the actual movement of the trolley
 public class Trolley : MonoBehaviour {
 
+    #region fields
     private bool started = false;
 
     [SerializeField] private float movespeed; //how fast the trolley moves
 
-    private List<Node> roadPath;
+    private List<Node> roadPath; //list of all nodes created during road generation
     private bool trackSwitched;  // *** DO TRACK SWITCHING LATER ***
 
-    private int currentBranch;
-    private float[] branches;
-    private int currentCount;
-    private Node targetNode;
-    private Vector3 targetPosition;
+    private int currentBranch; //branch of road trolley is currently on
+    private float[] branches; //number of sections in each branch
+    private int currentCount; //current position of trolley on branch
+    private Node targetNode; //Node trolley is heading towards
+    private Vector3 targetPosition; //(x,0,z) position trolley is heading towards 
 
-    private Vector3 moveVector;
-    private float distanceToTarget;
+    private Vector3 moveVector; //vector trolley is moving along
+    private float distanceToTarget; //how far from target position trolley is
+
+    private Node switchStateOne; //switch node branch and count change when path switch
+    private Node switchStateTwo;
+
+    #endregion
 
     private void Start()
     {
         trackSwitched = false;
     }
 
-    //called once the road has been completly setup
+    /// <summary>
+    /// called once the road has been completly setup
+    /// </summary>
+    /// <param name="path">List of all nodes in the level</param>
+    /// <param name="branches">Number of road sections in each branch of road</param>
     public void StartTheTrolley(List<Node> path, float[] branches)
     {
         this.branches = branches; //gets the max count for each branch
         roadPath = path;
+
+        //Print all nodes to Console
+        foreach (Node node in roadPath)
+        {
+            //Debug.Log("Node @" + node.Position() + "Branch,Count: " + node.Branch + "," + node.Count + " S: " + node.IsSwitch);
+            if (node.IsSwitch)
+            {
+                switchStateOne = node;                                 //state one continues straight
+                switchStateTwo = new Node(node.Transform, 1, 1, true); //state two branches off
+            }
+        }
+
         //set the first target node to the first node in the list
         targetNode = roadPath[0];
         SetValues();
@@ -44,6 +66,13 @@ public class Trolley : MonoBehaviour {
         //check if started
         if (started)
         {
+            //                                                              TEMP -----------------------------------------------
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                trackSwitched = !trackSwitched;
+            }
+            //                                                                   -----------------------------------------------
+
             //check if reached the end of the road
             if (currentCount == branches[currentBranch])
             {
@@ -55,7 +84,7 @@ public class Trolley : MonoBehaviour {
                 //check if reached the target node or gone past it 
                 if (distanceToTarget <= 0) 
                 {
-                    //find the next node
+                    //find the next node <<<------------------------------------- THIS ONE --------------------------------------
                     foreach (Node node in roadPath)
                     {
                         if (node.Branch == currentBranch && node.Count == currentCount + 1)
@@ -65,13 +94,24 @@ public class Trolley : MonoBehaviour {
                     }
                     SetValues();
                 }
-         
+                
+                //when targetNode is the switch assign branch and count so trolley knows where to go next when it passes the switch
+                if (targetNode.IsSwitch)
+                {
+                    //remove targetNode set it to appropriate state and add it back in
+                    roadPath.Remove(targetNode);
+                    targetNode = trackSwitched ? switchStateTwo : switchStateOne;
+                    roadPath.Add(targetNode);
+
+                    SetValues();
+                }
+
                 //move to target node by Move Vector in World Space
                 transform.Translate(moveVector, Space.World);
                 distanceToTarget -= moveVector.magnitude;
 
-                Debug.DrawRay(transform.position, transform.forward, Color.blue, 30);
-                Debug.DrawRay(transform.position, moveVector, Color.yellow, 30);
+        Debug.DrawRay(transform.position, transform.forward, Color.blue, 30);
+        Debug.DrawRay(transform.position, moveVector, Color.yellow, 30);
 
                 //turn towards target position 
                 float angle;
@@ -84,7 +124,9 @@ public class Trolley : MonoBehaviour {
         }
     }
 
-    //set all the values necissary for moving between nodes 
+    /// <summary>
+    /// set all the values necissary for moving between nodes 
+    /// </summary>
     private void SetValues()
     {
         targetPosition = new Vector3(targetNode.XPos(), transform.position.y, targetNode.ZPos());
@@ -116,10 +158,6 @@ public class Trolley : MonoBehaviour {
         return angle * Mathf.Sign(dotProduct); //return the angle (+ when transform.forward on left of moveVector)
     }
 
-    /// <summary>
-    /// What happens when an object gets hit by the bus 
-    /// </summary>
-    /// <param name="coll">Collider of the object being hit </param>
     public void OnTriggerEnter(Collider coll)
     {
         if(coll.tag == "Worker") 
@@ -153,9 +191,12 @@ public class Node : System.Object
         this.count = count;
         this.isSwitch = isSwitch;
     }
-
+    
+    //Properties and other information about Node
     public int Count { get { return count; } } //section of the branch
     public int Branch { get { return branch; } } //branch the node is on
+    public bool IsSwitch { get { return isSwitch; } } //node is a switch or not
+    public Transform Transform { get { return transform; } } //transform of node
     public Vector3 Position() { return transform.position; } //transform of node
     public float XPos() { return transform.position.x; } //x position of node
     public float ZPos() { return transform.position.z; } //z position of node

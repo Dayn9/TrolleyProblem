@@ -7,11 +7,10 @@ using UnityEngine.UI;
 public class Opening : MonoBehaviour {
 
     private static int level;
-    [SerializeField] private List<string> Levels;
+    [SerializeField] private List<string> Levels; //list of all level names
 
-    private Text Fact;
+    private Text Fact; //Fact to be displayed before each level
     
-    // Use this for initialization
 	void Start () {
         Fact = GetComponent<Text>();
         Fact.text = "FACT: " + getFact();
@@ -19,6 +18,7 @@ public class Opening : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        //on space key, advance from pre-screen to current level
         if (Input.GetKeyDown(KeyCode.Space))
         {
             SceneManager.LoadScene(Levels[level], LoadSceneMode.Single);
@@ -26,7 +26,21 @@ public class Opening : MonoBehaviour {
         }
 	}
 
+    /// <summary>
+    /// finds the fact text coresponding to CURRENT level
+    /// </summary>
+    /// <returns>Fact text to be displayed</returns>
     private string getFact()
+    {
+        return getFact(level);
+    }
+
+    /// <summary>
+    /// finds the fact text coresponding of a level
+    /// </summary>
+    /// <param name="level">level to find text of</param>
+    /// <returns>Fact text of level</returns>
+    public string getFact(int level)
     {
         switch (level)
         {

@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// *** TEMPORARAY ALTERNAATIVE ROAD SCRIPT FOR TESTING ***
+// *** TEMPORARAY ALTERNATIVE ROAD SCRIPT FOR TESTING ***
 
 public class TEMPROAD : MonoBehaviour
 {
     #region Fields
-    private float width; //dimensions of road gameobject
+    //dimensions of road gameobject
+    private float width; 
     private float length;
     private float height;
 
@@ -15,7 +16,7 @@ public class TEMPROAD : MonoBehaviour
 
     [SerializeField] private int branch; //what branch of the road the segment is part of
     private float maxBranch; //total length of the branch road segment is part of
-    public static List<int> branches = new List<int>(); //index of branches is branch, value is count of that branch
+    public static List<int> branches; //index of branches is branch, value is count of that branch
 
     public static List<RoadConfig> roadMap; //List of all the road branches and sections
 
@@ -44,18 +45,31 @@ public class TEMPROAD : MonoBehaviour
             manager.Sort();
             roadMap = manager.roadMap;
 
+            branches = new List<int>();
             branches.Add(0);
             branch = 0;
 
             nodes = new List<Node>();
             nodes.Add(new Node(transform, branch, branches[branch] + 1, false));
         }
+
         maxBranch = manager.branches[branch] - 1;
 
-        if (branches[branch] < maxBranch)
+        //start the trolley once all the nodes have been created 
+        if (nodes.Count == manager.NumSections() - manager.NumBranches() + 1)
         {
-            GameObject newRoad;
+            trolley.StartTheTrolley(nodes, manager.branches);
 
+            //reset all static variables for next level
+            manager = null;
+            roadMap = null;
+            nodes = null;
+            branches = null;
+        }
+        //nodes and road sections still need to be created
+        else if (branches[branch] < maxBranch)
+        {
+            GameObject newRoad; 
             //loop through list of all road sections
             foreach (RoadConfig config in roadMap)
             {
@@ -72,8 +86,8 @@ public class TEMPROAD : MonoBehaviour
                             //contiue current path with same ramp or curve
                             newRoad = Instantiate(gameObject);
                             Position(newRoad);
-                            nodes.Add(new Node(transform, branch, branches[branch] + 1, false));
                             branches[branch]++;
+                            nodes.Add(new Node(transform, branch, branches[branch] + 1, true));
                             //create new branch
                             curveAngle = config.curveAngle;
                             branches.Add(0);
@@ -85,49 +99,27 @@ public class TEMPROAD : MonoBehaviour
                     }
                 }
             }
+            // ---TEMPORARY---                                                     TEMP-----------------------------------------------
             if (branch == 0 && branches[branch] == 8)
             {
                 //create person on tracks
                 Instantiate(personPrefab, transform.position + Vector3.up * 2, transform.rotation);
             }
+            //                                                                         ------------------------------------------------
 
             //create a copy of self with same position and rotation
             newRoad = Instantiate(gameObject);
             Position(newRoad);
             //increase the count of the branch by 1
             branches[branch]++;
-            nodes.Add(new Node(transform, branch, branches[branch]+1, false));
-
-            //start the trolley once all the nodes have been created
-            if (nodes.Count == manager.NumSections() - manager.NumBranches() + 1) {
-                trolley.StartTheTrolley(nodes, manager.branches);
-
-                //reset all static variables for next level
-                manager = null;
-                roadMap = null;
-                nodes = null;
-                branches = null;
-            }
+            nodes.Add(new Node(transform, branch, branches[branch]+1, false));           
         }
     }
-    
-    /*
-    private void Update()
-    {
-        Renderer renderer = gameObject.GetComponent<Renderer>();
-        if (branch == 0)
-        {
-            renderer.material = activeTrack;
-            transform.SetPositionAndRotation(new Vector3(transform.position.x, 0, transform.position.z), transform.rotation);
-        }
-        else
-        {
-            renderer.material = inactiveTrack;
-            transform.SetPositionAndRotation(new Vector3(transform.position.x, -(float)0.001, transform.position.z), transform.rotation);
-        }
-    }*/
 
-    //move and rotate to new position
+    /// <summary>
+    /// moves and rotates new roads to the end of current road
+    /// </summary>
+    /// <param name="newRoad">road segment that needs to be positioned</param>
     private void Position(GameObject newRoad)
     {
         //move center of new Road to front of origional
