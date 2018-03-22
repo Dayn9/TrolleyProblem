@@ -19,6 +19,7 @@ public class TEMPROAD : MonoBehaviour
     public static List<int> branches; //index of branches is branch, value is count of that branch
 
     public static List<RoadConfig> roadMap; //List of all the road branches and sections
+    public static List<Worker> workers; //List of all worker locations 
 
     [SerializeField] private GameObject controller; //reference to the Game Controller
     private static RoadManager manager; //reference to RoadManager Script in Game Controller (Can't be static and Serialized)
@@ -41,14 +42,18 @@ public class TEMPROAD : MonoBehaviour
         //start initial branch
         if (roadMap == null)
         {
+            //get information from scenes 
             manager = controller.GetComponent<RoadManager>();
             manager.Sort();
             roadMap = manager.roadMap;
+            workers = manager.workerLocations;
 
+            //create the base branch
             branches = new List<int>();
             branches.Add(0);
             branch = 0;
 
+            //create the base node
             nodes = new List<Node>();
             nodes.Add(new Node(transform, branch, branches[branch] + 1, false));
         }
@@ -65,6 +70,7 @@ public class TEMPROAD : MonoBehaviour
             roadMap = null;
             nodes = null;
             branches = null;
+            workers = null;
         }
         //nodes and road sections still need to be created
         else if (branches[branch] < maxBranch)
@@ -99,20 +105,23 @@ public class TEMPROAD : MonoBehaviour
                     }
                 }
             }
-            // ---TEMPORARY---                                                     TEMP-----------------------------------------------
-            if (branch == 0 && branches[branch] == 8)
+
+            //create worker objects
+            foreach (Worker worker in workers)
             {
-                //create person on tracks
-                Instantiate(personPrefab, transform.position + Vector3.up * 2, transform.rotation);
+                if (worker.Branch == branch && worker.Count == branches[branch])
+                {
+                    //create person on tracks
+                    Instantiate(personPrefab, transform.position + Vector3.up * 3, transform.rotation);
+                }
             }
-            //                                                                         ------------------------------------------------
 
             //create a copy of self with same position and rotation
             newRoad = Instantiate(gameObject);
             Position(newRoad);
-            //increase the count of the branch by 1
+            //increase the count of the branch by 1 
             branches[branch]++;
-            nodes.Add(new Node(transform, branch, branches[branch]+1, false));           
+            nodes.Add(new Node(transform, branch, branches[branch]+1, false));  
         }
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RoadManager : MonoBehaviour {
     [SerializeField] public List<RoadConfig> roadMap; //list of all the road configurations manually input through inspector
-
+    [SerializeField] public List<Worker> workerLocations; //locations of workers on the tracks 
     [HideInInspector] public float[] branches; //holds an array of the current lengths of all the branches
 
     //assigns begin and end values to Road Configurations
@@ -97,4 +97,15 @@ public class RoadManager : MonoBehaviour {
         }
         return total;
     }
+}
+
+[System.Serializable]
+public class Worker : System.Object
+{
+    [SerializeField] private int branch; //branch the worker is on
+    [SerializeField] private int count; //which road section the worker is on
+
+    //accessors 
+    public int Branch { get { return branch; } }
+    public int Count { get { return count; } }
 }

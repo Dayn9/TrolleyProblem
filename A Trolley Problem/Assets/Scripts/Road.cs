@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//COPY IN TEMPROAD SCRIPT
+//DO NOT DELETE
+
 public class Road : MonoBehaviour {
 
     [SerializeField] private GameObject mainCamera; //reference to player camera
