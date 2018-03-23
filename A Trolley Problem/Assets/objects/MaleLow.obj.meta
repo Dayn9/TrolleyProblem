@@ -12,6 +12,8 @@ ModelImporter:
     400002: polySurface11_polySurface12
     400004: polySurface13_polySurface14
     2100000: initialShadingGroup
+    2100002: polySurface11_polySurface12Mat
+    2100004: polySurface13_polySurface14Mat
     2300000: polySurface11_polySurface12
     2300002: polySurface13_polySurface14
     3300000: polySurface11_polySurface12

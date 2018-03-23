@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4961187482956530}
   m_Layer: 0
   m_Name: Lever
-  m_TagString: Untagged
+  m_TagString: Lever
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,7 +106,7 @@ Transform:
   m_GameObject: {fileID: 1833980113203148}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.13, y: 0.70000005, z: 0}
-  m_LocalScale: {x: 0.08, y: 0.5, z: 0.08}
+  m_LocalScale: {x: 0.08, y: 0.7, z: 0.08}
   m_Children: []
   m_Father: {fileID: 4961187482956530}
   m_RootOrder: 2
@@ -119,7 +119,7 @@ Transform:
   m_GameObject: {fileID: 1446081514150370}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.13, y: 0.7, z: 0}
-  m_LocalScale: {x: 0.08, y: 0.5, z: 0.08}
+  m_LocalScale: {x: 0.08, y: 0.7, z: 0.08}
   m_Children: []
   m_Father: {fileID: 4961187482956530}
   m_RootOrder: 1
@@ -144,7 +144,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1544281318064808}
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 1.1, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 4961187482956530}
@@ -157,7 +157,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1294260449678668}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20, y: -1, z: 80}
+  m_LocalPosition: {x: -37.576416, y: 3.144425, z: 203.88727}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
   - {fileID: 4499500542302500}
