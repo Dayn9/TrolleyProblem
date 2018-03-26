@@ -61,18 +61,17 @@ public class Trolley : MonoBehaviour {
         started = true;
     }
 
+    public void SwitchTrack()
+    {
+        trackSwitched = !trackSwitched;
+    }
+
     private void Update()
     {
         //check if started
         if (started)
         {
-            //                                                              TEMP -----------------------------------------------
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                trackSwitched = !trackSwitched;
-            }
-            //                                                                   -----------------------------------------------
-
+            
             //check if reached the end of the road
             if (currentCount == branches[currentBranch])
             {

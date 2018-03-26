@@ -7,14 +7,21 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField] private float panSpeed;
 
-    [SerializeField] private GameObject Lever; 
+    [SerializeField] private Material inactiveMat;
+    [SerializeField] private Material activeMat;
 
-    private Camera camera; 
+    [SerializeField] private GameObject Lever;
+    [SerializeField] private GameObject Handle;
+    private Renderer render;
+    private Camera cam;
+
+    [SerializeField] private Trolley trolley;
 
     private void Start()
     {
         Cursor.visible = false;
-        camera = GetComponent<Camera>();
+        cam = GetComponent<Camera>();
+        render = gameObject.GetComponent<Renderer>();
     }
 
     // Update is called once per frame
@@ -41,21 +48,20 @@ public class PlayerMovement : MonoBehaviour
         //if there's a lever in the scene rotate it when clicked
         if(Lever != null)
         {
+            Handle.GetComponent<Renderer>().material = inactiveMat;
             RaycastHit hit;
-            Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+            Ray ray = cam.ScreenPointToRay(new Vector3(Screen.width / 2, (Screen.height / 2 - 3), 0));
             if (Physics.Raycast(ray, out hit) && hit.collider.tag == "Lever")
             {
-                Transform objectHit = hit.transform;
-                
-                if (Input.GetMouseButtonDown(0))
+                Handle.GetComponent<Renderer>().material = activeMat;
+                if (Input.GetMouseButtonDown(0)) //switch lever when clicked 
                 {
-                    Debug.Log(objectHit.position);
-                    Lever.transform.Rotate(-Lever.transform.rotation.eulerAngles.x*2, 0, 0);
+                    Lever.transform.Rotate(-Lever.transform.rotation.eulerAngles.x * 2, 0, 0);
+                    trolley.SwitchTrack();
                 }
+                
             }
         }
-              
-
         transform.Rotate(0, Input.GetAxis("Mouse X") * panSpeed, 0);
     }
 }
