@@ -209,3 +209,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movespeed: 0.5
+  roadScript: {fileID: 0}
+  bloodEffect: {fileID: 1791784866091814, guid: 4cfa2bbe1df6de8468f8dc05451c75ad,
+    type: 2}

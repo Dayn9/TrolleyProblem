@@ -201,7 +201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Levels:
   - Runaway
-  - Classic
+  - NewSplit
 --- !u!1 &837183924
 GameObject:
   m_ObjectHideFlags: 0

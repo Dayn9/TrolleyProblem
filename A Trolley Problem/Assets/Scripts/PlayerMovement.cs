@@ -12,16 +12,17 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private GameObject Lever;
     [SerializeField] private GameObject Handle;
-    private Renderer render;
     private Camera cam;
 
     [SerializeField] private Trolley trolley;
+
+    [SerializeField] private RoadManager roadManager;
+    private List<Worker> workers;
 
     private void Start()
     {
         Cursor.visible = false;
         cam = GetComponent<Camera>();
-        render = gameObject.GetComponent<Renderer>();
     }
 
     // Update is called once per frame
@@ -58,8 +59,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     Lever.transform.Rotate(-Lever.transform.rotation.eulerAngles.x * 2, 0, 0);
                     trolley.SwitchTrack();
-                }
-                
+                }  
             }
         }
         transform.Rotate(0, Input.GetAxis("Mouse X") * panSpeed, 0);

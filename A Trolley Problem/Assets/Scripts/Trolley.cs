@@ -27,6 +27,11 @@ public class Trolley : MonoBehaviour {
     private Node switchStateOne; //switch node branch and count change when path switch
     private Node switchStateTwo;
 
+    [SerializeField] private TEMPROAD roadScript; //used for reseting statics at end of level
+
+    [SerializeField] private GameObject bloodEffect;
+    [SerializeField] private GameObject mainCamera;
+
     #endregion
 
     private void Start()
@@ -51,7 +56,7 @@ public class Trolley : MonoBehaviour {
             if (node.IsSwitch)
             {
                 switchStateOne = node;                                 //state one continues straight
-                switchStateTwo = new Node(node.Transform, 1, 1, true); //state two branches off
+                switchStateTwo = new Node(node.Transform, 1, 2, true); //state two branches off
             }
         }
 
@@ -77,6 +82,8 @@ public class Trolley : MonoBehaviour {
             {
                 started = false;
                 SceneManager.LoadScene("Opening", LoadSceneMode.Single);
+
+                roadScript.ResetStatics();
             }
             else
             {
@@ -89,21 +96,35 @@ public class Trolley : MonoBehaviour {
                         if (node.Branch == currentBranch && node.Count == currentCount + 1)
                         {
                             targetNode = node;
+                            //when targetNode is the switch assign branch and count so trolley knows where to go next when it passes the switch
+                            if (targetNode.IsSwitch)
+                            {
+                                /* EDIT - Unnessisary addition and removal
+                                 * remove targetNode set it to appropriate state and add it back in
+                                roadPath.Remove(targetNode);
+                                targetNode = trackSwitched ? switchStateTwo : switchStateOne;
+                                roadPath.Add(targetNode);*/
+
+                                targetNode = trackSwitched ? switchStateTwo : switchStateOne;
+                               
+                                SetValues();
+                            }
                         }
                     }
                     SetValues();
                 }
-                
+                /*
                 //when targetNode is the switch assign branch and count so trolley knows where to go next when it passes the switch
                 if (targetNode.IsSwitch)
                 {
+                    Debug.Log("Switch");
                     //remove targetNode set it to appropriate state and add it back in
                     roadPath.Remove(targetNode);
                     targetNode = trackSwitched ? switchStateTwo : switchStateOne;
                     roadPath.Add(targetNode);
 
                     SetValues();
-                }
+                }*/
 
                 //move to target node by Move Vector in World Space
                 transform.Translate(moveVector, Space.World);
@@ -116,7 +137,7 @@ public class Trolley : MonoBehaviour {
                 float angle;
                 if (Mathf.Abs(angle = AngleBetweenTwoVectors(transform.forward, moveVector)) > 0.1) //only rotate if significant angle
                 {
-                    transform.Rotate(Vector3.up, Mathf.Lerp(0, angle, 0.05f), Space.World);
+                    transform.Rotate(Vector3.up, Mathf.Lerp(0, angle, 0.08f), Space.World);
                 }
             }
             
@@ -162,6 +183,8 @@ public class Trolley : MonoBehaviour {
         if(coll.tag == "Worker") 
         {
             //Destroy any worker hit by the bus
+            GameObject blood = bloodEffect;
+            Instantiate(blood, coll.transform.position, coll.transform.rotation);
             Destroy(coll.gameObject);
         }
     }

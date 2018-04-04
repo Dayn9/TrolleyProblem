@@ -30,6 +30,7 @@ public class TEMPROAD : MonoBehaviour
 
     [SerializeField] Material activeTrack;
     [SerializeField] Material inactiveTrack;
+
     #endregion
 
     private void Start()
@@ -61,16 +62,10 @@ public class TEMPROAD : MonoBehaviour
         maxBranch = manager.branches[branch] - 1;
 
         //start the trolley once all the nodes have been created 
-        if (nodes.Count == manager.NumSections() - manager.NumBranches() + 1)
+        if (nodes.Count >= manager.NumSections() - manager.NumBranches() + 1)
         {
             trolley.StartTheTrolley(nodes, manager.branches);
 
-            //reset all static variables for next level
-            manager = null;
-            roadMap = null;
-            nodes = null;
-            branches = null;
-            workers = null;
         }
         //nodes and road sections still need to be created
         else if (branches[branch] < maxBranch)
@@ -144,5 +139,15 @@ public class TEMPROAD : MonoBehaviour
 
         //rename based on position in x,z plane
         newRoad.name = "Road(" + (int)transform.position.x + ", " + (int)transform.position.z + ")";
+    }
+
+    public void ResetStatics()
+    {
+        //reset all static variables for next level
+        manager = null;
+        roadMap = null;
+        nodes = null;
+        branches = null;
+        workers = null;
     }
 }

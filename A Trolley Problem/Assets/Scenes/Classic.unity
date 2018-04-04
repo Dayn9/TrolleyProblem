@@ -302,6 +302,7 @@ MonoBehaviour:
   Lever: {fileID: 1006094937}
   Handle: {fileID: 285152964}
   trolley: {fileID: 226959173}
+  roadManager: {fileID: 0}
 --- !u!1001 &140392220
 Prefab:
   m_ObjectHideFlags: 0

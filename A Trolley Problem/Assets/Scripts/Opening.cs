@@ -45,7 +45,7 @@ public class Opening : MonoBehaviour {
         switch (level)
         {
             case 0: return "Sometimes trolley drivers fall asleep";
-            case 1: return "Switches change the tracks";
+            case 1: return "Switches change the trolley's path";
             default: return "Thats all the levels I've made so far"; // GET RID OF THIS AT SOME POINT
         }
     }

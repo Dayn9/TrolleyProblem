@@ -14,3 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Classic.unity
     guid: 92f684bf7788cd8468d833143ad5e9a8
+  - enabled: 1
+    path: Assets/Scenes/SplitTest.unity
+    guid: 930a321109016a24ab9468a5c9b7e359
+  - enabled: 1
+    path: Assets/Scenes/NewSplit.unity
+    guid: da889938e864a19448097372961b4d70
