@@ -43,7 +43,7 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 11
-  m_GIWorkflowMode: 0
+  m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -89,7 +89,8 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000002, guid: cec3752927ca4f5458a6903dccca4a9e,
+    type: 2}
   m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
@@ -200,8 +201,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Levels:
-  - Runaway
-  - NewSplit
+  - levelName: Runaway
+    text: Sometimes trolley drivers fall asleep
+  - levelName: SplitTest
+    text: Switches change the trolley's path
+  - levelName: FatmanTest
+    text: Fat people stop trolleys
+  - levelName: FatmanTest
+    text: Fat people tie people to tracks
+  - levelName: SplitTest
+    text: Children are just smaller people
+  - levelName: SplitTest
+    text: Old people are just greyer people
 --- !u!1 &837183924
 GameObject:
   m_ObjectHideFlags: 0

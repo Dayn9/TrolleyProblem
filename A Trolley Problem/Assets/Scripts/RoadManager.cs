@@ -105,6 +105,8 @@ public class Worker : System.Object
     [SerializeField] private int branch; //branch the worker is on
     [SerializeField] private int count; //which road section the worker is on
 
+    [SerializeField] private bool child, fat;
+
     //accessors 
     public int Branch { get { return branch; } }
     public int Count { get { return count; } }

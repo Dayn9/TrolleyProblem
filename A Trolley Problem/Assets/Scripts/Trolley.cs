@@ -76,7 +76,6 @@ public class Trolley : MonoBehaviour {
         //check if started
         if (started)
         {
-            
             //check if reached the end of the road
             if (currentCount == branches[currentBranch])
             {
@@ -187,7 +186,27 @@ public class Trolley : MonoBehaviour {
             Instantiate(blood, coll.transform.position, coll.transform.rotation);
             Destroy(coll.gameObject);
         }
+
+        if(coll.tag == "FatMan")
+        {
+            //Destroy any worker hit by the bus
+            GameObject blood = bloodEffect;
+            Instantiate(blood, coll.transform.position, coll.transform.rotation);
+            Destroy(coll.gameObject);
+
+            //Stop the Trolley
+            started = false;
+            StartCoroutine(TrolleyStop());
+        }
     }
+    
+    IEnumerator TrolleyStop()
+    {
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene("Opening", LoadSceneMode.Single);
+        roadScript.ResetStatics();
+    }
+
 }
 
 //Node class created by road for controlling the trolley movements

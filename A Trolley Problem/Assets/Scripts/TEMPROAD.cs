@@ -28,8 +28,8 @@ public class TEMPROAD : MonoBehaviour
     [SerializeField] private Trolley trolley; //Trolley controller script attached to trolley
     private static List<Node> nodes;
 
-    [SerializeField] Material activeTrack;
-    [SerializeField] Material inactiveTrack;
+    //[SerializeField] Material activeTrack;
+    //[SerializeField] Material inactiveTrack;
 
     #endregion
 

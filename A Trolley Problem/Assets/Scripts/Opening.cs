@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class Opening : MonoBehaviour {
 
     private static int level;
-    [SerializeField] private List<string> Levels; //list of all level names
+    [SerializeField] private List<Level> Levels; //list of all level names and text
 
     private Text Fact; //Fact to be displayed before each level
     
@@ -21,7 +21,7 @@ public class Opening : MonoBehaviour {
         //on space key, advance from pre-screen to current level
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            SceneManager.LoadScene(Levels[level], LoadSceneMode.Single);
+            SceneManager.LoadScene(Levels[level].LevelName, LoadSceneMode.Single);
             level++;
         }
 	}
@@ -32,21 +32,19 @@ public class Opening : MonoBehaviour {
     /// <returns>Fact text to be displayed</returns>
     private string getFact()
     {
-        return getFact(level);
-    }
-
-    /// <summary>
-    /// finds the fact text coresponding of a level
-    /// </summary>
-    /// <param name="level">level to find text of</param>
-    /// <returns>Fact text of level</returns>
-    public string getFact(int level)
-    {
-        switch (level)
-        {
-            case 0: return "Sometimes trolley drivers fall asleep";
-            case 1: return "Switches change the trolley's path";
-            default: return "Thats all the levels I've made so far"; // GET RID OF THIS AT SOME POINT
-        }
+        //return getFact(level);
+        return Levels[level].Text;
     }
 }
+
+[System.Serializable]
+public class Level
+{
+    [SerializeField] private string levelName;
+    [SerializeField] private string text;
+
+    public string LevelName { get { return levelName; } }
+    public string Text { get { return text; } }
+}
+
+
