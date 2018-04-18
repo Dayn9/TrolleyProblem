@@ -203,16 +203,14 @@ MonoBehaviour:
   Levels:
   - levelName: Runaway
     text: Sometimes trolley drivers fall asleep
-  - levelName: SplitTest
+  - levelName: Savior
     text: Switches change the trolley's path
+  - levelName: NewSplit
+    text: Oh no
+  - levelName: Savior2
+    text: You can push people
   - levelName: FatmanTest
     text: Fat people stop trolleys
-  - levelName: FatmanTest
-    text: Fat people tie people to tracks
-  - levelName: SplitTest
-    text: Children are just smaller people
-  - levelName: SplitTest
-    text: Old people are just greyer people
 --- !u!1 &837183924
 GameObject:
   m_ObjectHideFlags: 0
